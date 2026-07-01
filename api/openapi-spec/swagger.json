@@ -1,0 +1,556 @@
+{
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "KubeSphere License Server OpenAPI",
+    "title": "KubeSphere License Server",
+    "contact": {
+      "name": "KubeSphere",
+      "url": "https://kubesphere.com.cn/",
+      "email": "kubesphere@yunify.com"
+    },
+    "version": "v0.0.0"
+  },
+  "paths": {
+    "/kapis/server.license.kubesphere.io/v1alpha1/clusters/{cluster}/leases": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "list license leases acquired by the cluster",
+        "operationId": "ListLicenseLeases",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "cluster id",
+            "name": "cluster",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/models.LicenseLease"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "request a license lease for cluster",
+        "operationId": "RequestLicenseLease",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "cluster id",
+            "name": "cluster",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.CreateLicenseLeaseRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/models.LicenseLease"
+            }
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "reclaim license leases acquired by the cluster",
+        "operationId": "ReclaimLicenseLease",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "cluster id",
+            "name": "cluster",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/kapis/server.license.kubesphere.io/v1alpha1/clusters/{cluster}/ping": {
+      "get": {
+        "produces": [
+          "text/plain"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "ping by cluster",
+        "operationId": "Ping",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "cluster id",
+            "name": "cluster",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/kapis/server.license.kubesphere.io/v1alpha1/info": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "get server information",
+        "operationId": "GetInfo",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/models.ServerInformation"
+            }
+          }
+        }
+      }
+    },
+    "/kapis/server.license.kubesphere.io/v1alpha1/licenses": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "activate a license",
+        "operationId": "ActivateLicense",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ActivateLicenseRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/models.LicenseQuota"
+            }
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "deactivate a license",
+        "operationId": "DeactivateLicense",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.DeactivateLicenseRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/kapis/server.license.kubesphere.io/v1alpha1/quotas": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "list license quota and usage",
+        "operationId": "ListQuotaUsages",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "bundle name to query, default to all bundles.",
+            "name": "bundle",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/models.QuotaUsage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "NonResource APIs"
+        ],
+        "summary": "get version",
+        "operationId": "GetVersion",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/models.ServerVersion"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "gorm.DeletedAt": {
+      "required": [
+        "Time",
+        "Valid"
+      ],
+      "properties": {
+        "Time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "Valid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "models.ActivateLicenseRequest": {
+      "required": [
+        "license",
+        "bundle",
+        "override",
+        "dryRun"
+      ],
+      "properties": {
+        "bundle": {
+          "type": "string"
+        },
+        "dryRun": {
+          "type": "boolean"
+        },
+        "license": {
+          "type": "string"
+        },
+        "override": {
+          "type": "boolean"
+        }
+      }
+    },
+    "models.CreateLicenseLeaseRequest": {
+      "required": [
+        "Vcpu",
+        "NotBefore",
+        "NotAfter",
+        "Bundle",
+        "LicenseVersion"
+      ],
+      "properties": {
+        "Bundle": {
+          "type": "string"
+        },
+        "LicenseVersion": {
+          "type": "string"
+        },
+        "NotAfter": {
+          "type": "string"
+        },
+        "NotBefore": {
+          "type": "string"
+        },
+        "Vcpu": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "models.DeactivateLicenseRequest": {
+      "required": [
+        "bundle",
+        "all"
+      ],
+      "properties": {
+        "all": {
+          "type": "boolean"
+        },
+        "bundle": {
+          "type": "string"
+        }
+      }
+    },
+    "models.LicenseLease": {
+      "required": [
+        "ID",
+        "CreatedAt",
+        "UpdatedAt",
+        "DeletedAt",
+        "LicenseID",
+        "PlanType",
+        "Version",
+        "Raw",
+        "Bundle",
+        "NotBefore",
+        "NotAfter",
+        "ResourceType",
+        "ClusterID",
+        "PlanName",
+        "BundleRaw",
+        "Quota"
+      ],
+      "properties": {
+        "Bundle": {
+          "type": "string"
+        },
+        "BundleRaw": {
+          "type": "string"
+        },
+        "ClusterID": {
+          "type": "string"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "DeletedAt": {
+          "$ref": "#/definitions/gorm.DeletedAt"
+        },
+        "ID": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "LicenseID": {
+          "type": "string"
+        },
+        "NotAfter": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "NotBefore": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "PlanName": {
+          "type": "string"
+        },
+        "PlanType": {
+          "type": "string"
+        },
+        "Quota": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Raw": {
+          "type": "string"
+        },
+        "ResourceType": {
+          "type": "string"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "Version": {
+          "type": "string"
+        }
+      }
+    },
+    "models.LicenseQuota": {
+      "required": [
+        "CreatedAt",
+        "UpdatedAt",
+        "DeletedAt",
+        "ID",
+        "Version",
+        "Bundle",
+        "BundleRaw",
+        "NotAfter",
+        "ClusterID",
+        "Raw",
+        "NotBefore",
+        "ResourceType",
+        "Quota",
+        "LicenseID",
+        "PlanType",
+        "PlanName"
+      ],
+      "properties": {
+        "Bundle": {
+          "type": "string"
+        },
+        "BundleRaw": {
+          "type": "string"
+        },
+        "ClusterID": {
+          "type": "string"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "DeletedAt": {
+          "$ref": "#/definitions/gorm.DeletedAt"
+        },
+        "ID": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "LicenseID": {
+          "type": "string"
+        },
+        "NotAfter": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "NotBefore": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "PlanName": {
+          "type": "string"
+        },
+        "PlanType": {
+          "type": "string"
+        },
+        "Quota": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Raw": {
+          "type": "string"
+        },
+        "ResourceType": {
+          "type": "string"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "Version": {
+          "type": "string"
+        }
+      }
+    },
+    "models.QuotaUsage": {
+      "required": [
+        "Quota",
+        "Total",
+        "Used"
+      ],
+      "properties": {
+        "Quota": {
+          "$ref": "#/definitions/models.LicenseQuota"
+        },
+        "Total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Used": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "models.ServerInformation": {
+      "required": [
+        "ServerID",
+        "Runtime",
+        "Version"
+      ],
+      "properties": {
+        "Runtime": {
+          "type": "string"
+        },
+        "ServerID": {
+          "type": "string"
+        },
+        "Version": {
+          "type": "string"
+        }
+      }
+    },
+    "models.ServerVersion": {
+      "required": [
+        "Version"
+      ],
+      "properties": {
+        "Version": {
+          "type": "string"
+        }
+      }
+    },
+    "v1.Time": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "securityDefinitions": {
+    "BearerToken": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
