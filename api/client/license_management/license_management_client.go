@@ -86,11 +86,15 @@ type ClientService interface {
 
 	GetInfo(params *GetInfoParams, opts ...ClientOption) (*GetInfoOK, error)
 
+	ListAllLeases(params *ListAllLeasesParams, opts ...ClientOption) (*ListAllLeasesOK, error)
+
 	ListLicenseLeases(params *ListLicenseLeasesParams, opts ...ClientOption) (*ListLicenseLeasesOK, error)
 
 	ListQuotaUsages(params *ListQuotaUsagesParams, opts ...ClientOption) (*ListQuotaUsagesOK, error)
 
 	Ping(params *PingParams, opts ...ClientOption) (*PingOK, error)
+
+	ReclaimAllLeases(params *ReclaimAllLeasesParams, opts ...ClientOption) (*ReclaimAllLeasesOK, error)
 
 	ReclaimLicenseLease(params *ReclaimLicenseLeaseParams, opts ...ClientOption) (*ReclaimLicenseLeaseOK, error)
 
@@ -229,6 +233,49 @@ func (a *Client) GetInfo(params *GetInfoParams, opts ...ClientOption) (*GetInfoO
 }
 
 /*
+ListAllLeases lists all license leases optionally filtered by cluster
+*/
+func (a *Client) ListAllLeases(params *ListAllLeasesParams, opts ...ClientOption) (*ListAllLeasesOK, error) {
+	// NOTE: parameters are not validated before sending
+	if params == nil {
+		params = NewListAllLeasesParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "ListAllLeases",
+		Method:             "GET",
+		PathPattern:        "/kapis/server.license.kubesphere.io/v1alpha1/leases",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http", "https"},
+		Params:             params,
+		Reader:             &ListAllLeasesReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+
+	// only one success response has to be checked
+	success, ok := result.(*ListAllLeasesOK)
+	if ok {
+		return success, nil
+	}
+
+	// unexpected success response.
+
+	// no default response is defined.
+	//
+	// safeguard: normally, in the absence of a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ListAllLeases: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
 ListLicenseLeases lists license leases acquired by the cluster
 */
 func (a *Client) ListLicenseLeases(params *ListLicenseLeasesParams, opts ...ClientOption) (*ListLicenseLeasesOK, error) {
@@ -354,6 +401,49 @@ func (a *Client) Ping(params *PingParams, opts ...ClientOption) (*PingOK, error)
 	//
 	// safeguard: normally, in the absence of a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for Ping: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+ReclaimAllLeases reclaims license leases optionally filtered by cluster
+*/
+func (a *Client) ReclaimAllLeases(params *ReclaimAllLeasesParams, opts ...ClientOption) (*ReclaimAllLeasesOK, error) {
+	// NOTE: parameters are not validated before sending
+	if params == nil {
+		params = NewReclaimAllLeasesParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "ReclaimAllLeases",
+		Method:             "DELETE",
+		PathPattern:        "/kapis/server.license.kubesphere.io/v1alpha1/leases",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http", "https"},
+		Params:             params,
+		Reader:             &ReclaimAllLeasesReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+
+	// only one success response has to be checked
+	success, ok := result.(*ReclaimAllLeasesOK)
+	if ok {
+		return success, nil
+	}
+
+	// unexpected success response.
+
+	// no default response is defined.
+	//
+	// safeguard: normally, in the absence of a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ReclaimAllLeases: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

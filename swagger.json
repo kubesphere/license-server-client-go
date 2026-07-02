@@ -155,6 +155,60 @@
         }
       }
     },
+    "/kapis/server.license.kubesphere.io/v1alpha1/leases": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "list all license leases, optionally filtered by cluster",
+        "operationId": "ListAllLeases",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "cluster id to filter, can be specified multiple times.",
+            "name": "cluster",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/models.LicenseLease"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "License Management"
+        ],
+        "summary": "reclaim license leases, optionally filtered by cluster",
+        "operationId": "ReclaimAllLeases",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "cluster id to filter, can be specified multiple times.",
+            "name": "cluster",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
     "/kapis/server.license.kubesphere.io/v1alpha1/licenses": {
       "post": {
         "produces": [
@@ -347,17 +401,17 @@
         "CreatedAt",
         "UpdatedAt",
         "DeletedAt",
+        "ClusterID",
         "LicenseID",
         "PlanType",
         "Version",
         "Raw",
         "Bundle",
         "NotBefore",
-        "NotAfter",
         "ResourceType",
-        "ClusterID",
         "PlanName",
         "BundleRaw",
+        "NotAfter",
         "Quota"
       ],
       "properties": {
@@ -419,22 +473,22 @@
     },
     "models.LicenseQuota": {
       "required": [
+        "ID",
         "CreatedAt",
         "UpdatedAt",
         "DeletedAt",
-        "ID",
-        "Version",
-        "Bundle",
-        "BundleRaw",
-        "NotAfter",
-        "ClusterID",
-        "Raw",
-        "NotBefore",
-        "ResourceType",
-        "Quota",
         "LicenseID",
         "PlanType",
-        "PlanName"
+        "PlanName",
+        "Version",
+        "BundleRaw",
+        "NotAfter",
+        "Quota",
+        "ClusterID",
+        "Raw",
+        "Bundle",
+        "NotBefore",
+        "ResourceType"
       ],
       "properties": {
         "Bundle": {
