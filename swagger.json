@@ -171,6 +171,13 @@
             "description": "cluster id to filter, can be specified multiple times.",
             "name": "cluster",
             "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "false",
+            "description": "include raw bundle data in the response. default to false.",
+            "name": "withRawBundle",
+            "in": "query"
           }
         ],
         "responses": {
@@ -401,18 +408,18 @@
         "CreatedAt",
         "UpdatedAt",
         "DeletedAt",
+        "NotBefore",
+        "NotAfter",
+        "Quota",
         "ClusterID",
-        "LicenseID",
         "PlanType",
+        "PlanName",
         "Version",
         "Raw",
-        "Bundle",
-        "NotBefore",
         "ResourceType",
-        "PlanName",
-        "BundleRaw",
-        "NotAfter",
-        "Quota"
+        "LicenseID",
+        "Bundle",
+        "BundleRaw"
       ],
       "properties": {
         "Bundle": {
@@ -473,22 +480,22 @@
     },
     "models.LicenseQuota": {
       "required": [
-        "ID",
-        "CreatedAt",
         "UpdatedAt",
         "DeletedAt",
+        "ID",
+        "CreatedAt",
+        "NotAfter",
         "LicenseID",
+        "Raw",
+        "Bundle",
+        "BundleRaw",
+        "ResourceType",
+        "Quota",
+        "ClusterID",
         "PlanType",
         "PlanName",
         "Version",
-        "BundleRaw",
-        "NotAfter",
-        "Quota",
-        "ClusterID",
-        "Raw",
-        "Bundle",
-        "NotBefore",
-        "ResourceType"
+        "NotBefore"
       ],
       "properties": {
         "Bundle": {

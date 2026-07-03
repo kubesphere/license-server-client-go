@@ -67,6 +67,14 @@ type ListAllLeasesParams struct {
 	*/
 	Cluster *string
 
+	/* WithRawBundle.
+
+	   include raw bundle data in the response. default to false.
+
+	   Default: "false"
+	*/
+	WithRawBundle *string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -84,7 +92,18 @@ func (o *ListAllLeasesParams) WithDefaults() *ListAllLeasesParams {
 //
 // All values with no default are reset to their zero value.
 func (o *ListAllLeasesParams) SetDefaults() {
-	// no default values defined for this parameter
+	var (
+		withRawBundleDefault = string("false")
+	)
+
+	val := ListAllLeasesParams{
+		WithRawBundle: &withRawBundleDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the list all leases params
@@ -131,6 +150,17 @@ func (o *ListAllLeasesParams) SetCluster(cluster *string) {
 	o.Cluster = cluster
 }
 
+// WithWithRawBundle adds the withRawBundle to the list all leases params
+func (o *ListAllLeasesParams) WithWithRawBundle(withRawBundle *string) *ListAllLeasesParams {
+	o.SetWithRawBundle(withRawBundle)
+	return o
+}
+
+// SetWithRawBundle adds the withRawBundle to the list all leases params
+func (o *ListAllLeasesParams) SetWithRawBundle(withRawBundle *string) {
+	o.WithRawBundle = withRawBundle
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ListAllLeasesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -151,6 +181,23 @@ func (o *ListAllLeasesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 		if qCluster != "" {
 
 			if err := r.SetQueryParam("cluster", qCluster); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.WithRawBundle != nil {
+
+		// query param withRawBundle
+		var qrWithRawBundle string
+
+		if o.WithRawBundle != nil {
+			qrWithRawBundle = *o.WithRawBundle
+		}
+		qWithRawBundle := qrWithRawBundle
+		if qWithRawBundle != "" {
+
+			if err := r.SetQueryParam("withRawBundle", qWithRawBundle); err != nil {
 				return err
 			}
 		}
