@@ -1,6 +1,6 @@
 module github.com/kubesphere/license-server-client-go
 
-go 1.26.4
+go 1.25.0
 
 require (
 	github.com/go-openapi/errors v0.22.8
